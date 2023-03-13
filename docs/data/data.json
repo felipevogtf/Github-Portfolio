@@ -130,53 +130,12 @@
   },
   "proyectos": {
     "id": "projects",
-    "titulo": "Algunos proyectos destacados",
-    "proyectos": [
-      {
-        "titulo": "Buscaminas",
-        "imagen": "./imgs/buscaminas.png",
-        "descripcion": "Aplicación web inspirada en el popular juego Buscaminas, cuyo objetivo es despejar el campo de minas sin detonar ninguna de ellas.",
-        "tecnologias": ["Angular", "Typescript"],
-        "git_link": "https://github.com/felipevogtf/Buscaminas",
-        "demo_link": "https://felipevogtf.github.io/Buscaminas/"
-      },
-      {
-        "titulo": "Trivia Pokémon",
-        "imagen": "./imgs/trivia-pokemon.png",
-        "descripcion": "Juego de trivia relacionado al mundo Pokémon, cuenta con un sistema de puntuación y de rankings.",
-        "tecnologias": ["Vue", "Vuetify", "Javascript", "Firebase"],
-        "git_link": "https://github.com/felipevogtf/Trivia-Pokemon",
-        "demo_link": "https://cuanto-sabes-de-pokemon.web.app/login"
-      }
-    ]
+    "titulo": "Algunos proyectos destacados"
   },
   "otros_proyectos": {
     "id": "other-projects",
     "titulo": "Otros proyectos",
-    "boton_mostrar_mas": "Mostrar más",
-    "proyectos": [
-      {
-        "titulo": "Portafolio",
-        "descripcion": "Plantilla de portafolio que presenta de manera detallada experiencia, habilidades y proyectos realizados.",
-        "tecnologias": ["Vue", "Typescript", "SCSS"],
-        "git_link": "https://github.com/felipevogtf/Portfolio",
-        "demo_link": ""
-      },
-      {
-        "titulo": "Wololo Stats",
-        "descripcion": "Wololo Stats es una aplicación de Age of Empires 2 que brinda información sobre unidades, estructuras, civilizaciones y tecnologías, y permite comparar la mejor opción en diversas situaciones de juego.",
-        "tecnologias": ["Ionic", "Angular"],
-        "git_link": "https://github.com/felipevogtf/Wololo-Stats",
-        "demo_link": ""
-      },
-      {
-        "titulo": "Simple Weather App",
-        "descripcion": "Una aplicación sencilla para visualizar el clima en tu ubicación actual mediante la tecnología de geolocalización, todo ello gracias a la API de Weatherapi.",
-        "tecnologias": ["Ionic", "Angular"],
-        "git_link": "https://github.com/felipevogtf/Simple-Weather-App",
-        "demo_link": "https://felipevogtf.github.io/Simple-Weather-App/"
-      }
-    ]
+    "boton_mostrar_mas": "Mostrar más"
   },
   "contacto": {
     "id": "contact",

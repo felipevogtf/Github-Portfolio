@@ -1,27 +1,33 @@
-import { ApolloClient, ApolloLink, concat, HttpLink, InMemoryCache } from '@apollo/client/core'
-import { createApolloProvider } from '@vue/apollo-option'
+import {
+  ApolloClient,
+  ApolloLink,
+  concat,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client/core";
+import { createApolloProvider } from "@vue/apollo-option";
 
 const httpLink = new HttpLink({ uri: "https://api.github.com/graphql" });
 const authMiddleware = new ApolloLink((operation, forward) => {
-    // add the authorization to the headers
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
-    operation.setContext({
-        headers: {
-            authorization: token ? `Bearer ${token}` : "",
-        },
-    });
-    return forward(operation);
+  // add the authorization to the headers
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  return forward(operation);
 });
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache();
 
 const apolloClient = new ApolloClient({
-    cache,
-    link: concat(authMiddleware, httpLink),
-})
+  cache,
+  link: concat(authMiddleware, httpLink),
+});
 
 const apolloProvider = createApolloProvider({
-    defaultClient: apolloClient,
-})
+  defaultClient: apolloClient,
+});
 
 export default apolloProvider;

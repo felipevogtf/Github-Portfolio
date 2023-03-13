@@ -7,6 +7,6 @@ import apolloProvider from "./apolloProvider";
 const app = createApp(App);
 
 app.use(router);
-app.use(apolloProvider)
+app.use(apolloProvider);
 
 app.mount("#app");

@@ -38,6 +38,11 @@ export default {
     getPositionClass(index: number): string {
       return index % 2 === 0 ? "position-left" : "position-right";
     },
+    capitalized(name: string) {
+      const capitalizedFirst = name[0].toUpperCase();
+      const rest = name.slice(1);
+      return capitalizedFirst + rest;
+    },
   },
   setup() {
     const target = ref(null);
@@ -100,7 +105,7 @@ export default {
               v-for="(node, index) in item.repositoryTopics.nodes"
               :key="index"
             >
-              {{ node.topic.name }}
+              {{ capitalized(node.topic.name) }}
             </span>
           </div>
           <h3 class="text-accent">{{ item.name }}</h3>

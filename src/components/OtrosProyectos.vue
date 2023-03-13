@@ -40,6 +40,11 @@ export default {
     mostrarMas(): void {
       this.$emit("mostrarMas", true);
     },
+    capitalized(name: string) {
+      const capitalizedFirst = name[0].toUpperCase();
+      const rest = name.slice(1);
+      return capitalizedFirst + rest;
+    },
   },
   setup() {
     const target = ref(null);
@@ -89,7 +94,7 @@ export default {
                 v-for="(node, index) in item.repositoryTopics.nodes"
                 :key="index"
               >
-                {{ node.topic.name }}
+                {{ capitalized(node.topic.name) }}
               </span>
             </div>
             <!-- Fin. Chips -->

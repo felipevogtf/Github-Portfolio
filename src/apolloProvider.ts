@@ -11,9 +11,11 @@ const httpLink = new HttpLink({ uri: "https://api.github.com/graphql" });
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
   const token = import.meta.env.VITE_GITHUB_TOKEN;
+
+  const tokenDecode = atob(token);
   operation.setContext({
     headers: {
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: token ? `Bearer ${tokenDecode}` : "",
     },
   });
   return forward(operation);

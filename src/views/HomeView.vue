@@ -8,8 +8,36 @@ import Contacto from "./../components/Contacto.vue";
 import Copyrigth from "../components/Copyrigth.vue";
 import RedesSociales from "./../components/RedesSociales.vue";
 import Navbar from "./../components/Navbar.vue";
+import githubQuery from "./../queries/github.query";
+import type { GithubData, Repository } from "@/models/github-data.model";
 
 export default {
+  apollo: {
+    viewer: {
+      query: githubQuery,
+      variables() {
+        const pinned: number = this.pinnedRepos;
+        const other: number = this.otherRepos;
+        return {
+          pinnedRepos: pinned,
+          otherRepos: other,
+          page: "",
+        };
+      },
+      result({ data }: GithubData) {
+        this.resultLoads++;
+        const pinnedRepos: string[] = data.viewer.pinnedItems.nodes.map(
+          (repo: Repository) => repo.id
+        );
+        const otherRepos: Repository[] = data.viewer.pinnableItems.nodes.filter(
+          (repo: Repository) => !pinnedRepos.includes(repo.id)
+        );
+
+        this.pinnedRepositories = data.viewer.pinnedItems.nodes;
+        this.otherRepositories = otherRepos;
+      },
+    },
+  },
   components: {
     Presentacion,
     SobreMi,
@@ -23,66 +51,98 @@ export default {
   },
   data() {
     return {
-      data: null as any,
+      jsonData: null as any,
+      viewer: "" as any,
+      peerItems: 3,
+      pinnedRepos: 2,
+      otherRepos: 0,
+      resultLoads: 0,
+      pinnedRepositories: [] as Repository[],
+      otherRepositories: [] as Repository[],
     };
   },
   async mounted() {
     const baseUrl = import.meta.env.VITE_URL;
     const response = await fetch(`${baseUrl}data/data.json`);
     const file = await response.json();
-    this.data = file;
+    this.jsonData = file;
+  },
+  created() {
+    this.otherRepos = this.pinnedRepos + this.peerItems;
+  },
+  methods: {
+    cargarMas() {
+      this.$apollo.queries.viewer.fetchMore({
+        variables: {
+          page: this.viewer.pinnableItems.pageInfo.endCursor,
+        },
+        updateQuery(prev, { fetchMoreResult }) {
+          const nodes = [
+            ...prev.viewer.pinnableItems.nodes,
+            ...fetchMoreResult.viewer.pinnableItems.nodes,
+          ];
+          fetchMoreResult.viewer.pinnableItems.nodes = nodes;
+          return fetchMoreResult;
+        },
+      });
+    },
   },
 };
 </script>
 
 <template>
-  <main role="main" v-if="data">
+  <main role="main" v-if="jsonData && resultLoads >= 1">
     <nav role="navigation">
-      <Navbar :data="data.navbar"></Navbar>
+      <Navbar :data="jsonData.navbar"></Navbar>
     </nav>
 
     <div class="glow"></div>
 
-    <section role="region" :aria-labelledby="data.inicio.id">
-      <Presentacion :id="data.inicio.id" :data="data.inicio" />
+    <section role="region" :aria-labelledby="jsonData.inicio.id">
+      <Presentacion :id="jsonData.inicio.id" :data="jsonData.inicio" />
     </section>
 
     <div class="glow glow-right"></div>
-    <section role="region" :aria-labelledby="data.sobre_mi.id">
+    <section role="region" :aria-labelledby="jsonData.sobre_mi.id">
       <SobreMi
-        :id="data.sobre_mi.id"
-        :data="data.sobre_mi"
+        :id="jsonData.sobre_mi.id"
+        :data="jsonData.sobre_mi"
         class="section-margin"
       />
     </section>
-    <section role="region" :aria-labelledby="data.experiencia.id">
+    <section role="region" :aria-labelledby="jsonData.experiencia.id">
       <Experiencia
-        :id="data.experiencia.id"
-        :data="data.experiencia"
+        :id="jsonData.experiencia.id"
+        :data="jsonData.experiencia"
         class="section-margin"
       />
     </section>
     <div class="glow"></div>
-    <section role="region" :aria-labelledby="data.proyectos.id">
+    <section role="region" :aria-labelledby="jsonData.proyectos.id">
       <Proyectos
-        :id="data.proyectos.id"
-        :data="data.proyectos"
+        :id="jsonData.proyectos.id"
+        :data="jsonData.proyectos"
+        :repositories="pinnedRepositories"
         class="section-margin"
       />
     </section>
-    <section role="region" :aria-labelledby="data.otros_proyectos.id">
+    <section role="region" :aria-labelledby="jsonData.otros_proyectos.id">
       <OtrosProyectos
-        :id="data.otros_proyectos.id"
-        :data="data.otros_proyectos"
+        :id="jsonData.otros_proyectos.id"
+        :data="jsonData.otros_proyectos"
+        :hasMore="viewer.pinnableItems.pageInfo.hasNextPage"
+        :repositories="otherRepositories"
+        :is-load="$apollo.loading"
+        @mostrarMas="cargarMas"
         class="section-margin"
       />
     </section>
     <div class="glow glow-right"></div>
-    <section role="region" :aria-labelledby="data.contacto.id">
+    <section role="region" :aria-labelledby="jsonData.contacto.id">
       <Contacto
         ref="test"
-        :id="data.contacto.id"
-        :data="data.contacto"
+        :id="jsonData.contacto.id"
+        :data="jsonData.contacto"
         class="section-margin"
       />
     </section>
@@ -90,7 +150,10 @@ export default {
       <Copyrigth />
     </footer>
 
-    <RedesSociales :id="data.redes.id" :data="data.redes"></RedesSociales>
+    <RedesSociales
+      :id="jsonData.redes.id"
+      :data="jsonData.redes"
+    ></RedesSociales>
   </main>
 
   <div class="load-full-page" v-else>
@@ -134,6 +197,7 @@ export default {
   width: 80px;
   height: 80px;
 }
+
 .lds-ellipsis div {
   position: absolute;
   top: 33px;
@@ -143,42 +207,52 @@ export default {
   background: var(--text);
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
+
 .lds-ellipsis div:nth-child(1) {
   left: 8px;
   animation: lds-ellipsis1 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(2) {
   left: 8px;
   animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(3) {
   left: 32px;
   animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(4) {
   left: 56px;
   animation: lds-ellipsis3 0.6s infinite;
 }
+
 @keyframes lds-ellipsis1 {
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
 }
+
 @keyframes lds-ellipsis3 {
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0);
   }
 }
+
 @keyframes lds-ellipsis2 {
   0% {
     transform: translate(0, 0);
   }
+
   100% {
     transform: translate(24px, 0);
   }

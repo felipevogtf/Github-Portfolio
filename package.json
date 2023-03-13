@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "github-portfolio",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,11 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
+    "@vue/apollo-option": "^4.0.0-beta.4",
     "@vueuse/core": "^9.13.0",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

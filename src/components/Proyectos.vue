@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Proyecto } from "@/models/proyecto.model";
+import type { Repository } from "@/models/github-data.model";
 import type { ProyectosData } from "@/models/proyectos-data.model";
 import { useElementVisibility } from "@vueuse/core";
 import { ref } from "vue";
@@ -11,6 +11,10 @@ export default {
       type: Object as () => ProyectosData,
       required: true,
     },
+    repositories: {
+      type: Object as () => Repository[],
+      required: true,
+    },
   },
   data() {
     return {
@@ -18,12 +22,12 @@ export default {
     };
   },
   methods: {
-    getLink(proyecto: Proyecto): string {
+    getLink(proyecto: Repository): string {
       let link: string = "";
-      if (proyecto.demo_link) {
-        link = proyecto.demo_link;
-      } else if (proyecto.git_link) {
-        link = proyecto.git_link;
+      if (proyecto.homepageUrl) {
+        link = proyecto.homepageUrl;
+      } else if (proyecto.url) {
+        link = proyecto.url;
       }
 
       return link;
@@ -74,7 +78,7 @@ export default {
         class="proyecto"
         :class="[fadeClass, getPositionClass(index)]"
         style="animation-delay: 300ms"
-        v-for="(item, index) in data.proyectos"
+        v-for="(item, index) in repositories"
         :key="index"
       >
         <!-- Inicio. Imagen -->
@@ -84,7 +88,7 @@ export default {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <img :src="item.imagen" :alt="item.titulo" />
+          <img :src="item.openGraphImageUrl" :alt="item.name" />
         </a>
         <!-- Fin. Imagen -->
 
@@ -93,22 +97,22 @@ export default {
           <div class="chips">
             <span
               class="chip-span"
-              v-for="(tecnologia, index) in item.tecnologias"
+              v-for="(node, index) in item.repositoryTopics.nodes"
               :key="index"
             >
-              {{ tecnologia }}
+              {{ node.topic.name }}
             </span>
           </div>
-          <h3 class="text-accent">{{ item.titulo }}</h3>
+          <h3 class="text-accent">{{ item.name }}</h3>
           <p class="proyecto-descripcion">
-            {{ item.descripcion }}
+            {{ item.description }}
           </p>
 
           <div class="botonera">
             <a
               class="icon-button text-h3"
-              v-if="item.git_link"
-              :href="item.git_link"
+              v-if="item.url"
+              :href="item.url"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -116,8 +120,8 @@ export default {
             </a>
             <a
               class="icon-button text-h3"
-              v-if="item.demo_link"
-              :href="item.demo_link"
+              v-if="item.homepageUrl"
+              :href="item.homepageUrl"
               rel="noopener noreferrer"
               target="_blank"
             >

@@ -1,8 +1,8 @@
 <script lang="ts">
 import type { ProyectosData } from "@/models/proyectos-data.model";
-import type { Proyecto } from "@/models/proyecto.model";
 import { useElementVisibility } from "@vueuse/core";
 import { ref } from "vue";
+import type { Repository } from "@/models/github-data.model";
 
 export default {
   name: "OtrosProyectosComponent",
@@ -11,23 +11,25 @@ export default {
       type: Object as () => ProyectosData,
       required: true,
     },
+    hasMore: { Type: Boolean, required: true },
+    isLoad: { Type: Boolean, required: true },
+    repositories: {
+      type: Object as () => Repository[],
+      required: true,
+    },
   },
   data() {
     return {
-      proyectos: [] as Proyecto[],
       visibleCounter: false,
     };
   },
-  created() {
-    this.proyectos = this.data.proyectos.slice(0, 6);
-  },
   methods: {
-    getLink(proyecto: Proyecto): string {
+    getLink(proyecto: Repository): string {
       let link: string = "";
-      if (proyecto.demo_link) {
-        link = proyecto.demo_link;
-      } else if (proyecto.git_link) {
-        link = proyecto.git_link;
+      if (proyecto.homepageUrl) {
+        link = proyecto.homepageUrl;
+      } else if (proyecto.url) {
+        link = proyecto.url;
       }
 
       return link;
@@ -36,14 +38,7 @@ export default {
       this.visibleCounter = true;
     },
     mostrarMas(): void {
-      const min = this.proyectos.length;
-      const max = min + 6;
-
-      const data = this.data.proyectos.slice(min, max);
-
-      if (this.proyectos.length <= this.data.proyectos.length) {
-        this.proyectos = this.proyectos.concat(data);
-      }
+      this.$emit("mostrarMas", true);
     },
   },
   setup() {
@@ -80,7 +75,7 @@ export default {
       <TransitionGroup name="slide-up">
         <a
           class="wrap-card"
-          v-for="(item, index) in proyectos"
+          v-for="(item, index) in repositories"
           :href="getLink(item)"
           rel="noopener noreferrer"
           target="_blank"
@@ -91,25 +86,25 @@ export default {
             <div class="chips">
               <span
                 class="chip-span"
-                v-for="(tecnologia, index) in item.tecnologias"
+                v-for="(node, index) in item.repositoryTopics.nodes"
                 :key="index"
               >
-                {{ tecnologia }}
+                {{ node.topic.name }}
               </span>
             </div>
             <!-- Fin. Chips -->
 
             <!-- Inicio. Texto  -->
-            <h3 class="card-titulo">{{ item.titulo }}</h3>
-            <p class="card-descripcion">{{ item.descripcion }}</p>
+            <h3 class="card-titulo">{{ item.name }}</h3>
+            <p class="card-descripcion">{{ item.description }}</p>
             <!-- Fin. Texto -->
 
             <!-- Inicio. Botones -->
             <div class="card-opciones">
               <a
                 class="icon-button"
-                v-if="item.git_link"
-                :href="item.git_link"
+                v-if="item.url"
+                :href="item.url"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -117,8 +112,8 @@ export default {
               </a>
               <a
                 class="icon-button"
-                v-if="item.demo_link"
-                :href="item.demo_link"
+                v-if="item.homepageUrl"
+                :href="item.homepageUrl"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -132,9 +127,12 @@ export default {
     </div>
 
     <Transition>
-      <div class="mostrar-mas" v-if="proyectos.length < data.proyectos.length">
+      <div class="mostrar-mas" v-if="hasMore">
         <button class="outline-button" v-on:click="mostrarMas()">
-          {{ data.boton_mostrar_mas }}
+          <span class="spinner-button"
+            ><i class="fa-solid fa-spinner fa-spin" v-if="isLoad"></i>
+            {{ data.boton_mostrar_mas }}</span
+          >
         </button>
       </div>
     </Transition>
@@ -165,6 +163,7 @@ export default {
     .card {
       display: flex;
       flex-direction: column;
+      width: 100%;
 
       .card-opciones {
         margin-top: auto;

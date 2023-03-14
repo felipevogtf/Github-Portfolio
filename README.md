@@ -10,7 +10,7 @@ Mi portafolio personal realizado en Vue.js, cargando mis proyectos en Github med
 </div>
 </br>
 
-<a href="https://felipevogtf.github.io/Github-Portfolio/" rel="noopener noreferrer" target="_blank">![demo](https://raw.githubusercontent.com/felipevogtf/Github-Portfolio/main/public/demo.jpg)</a>
+<a href="https://felipevogtf.github.io/Github-Portfolio/" rel="noopener noreferrer" target="_blank">![demo](https://raw.githubusercontent.com/felipevogtf/Github-Portfolio/master/public/demo.jpg)</a>
 
 ## Instalación
 

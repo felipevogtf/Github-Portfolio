@@ -2,7 +2,7 @@
   <img alt="Logo" src="https://raw.githubusercontent.com/felipevogtf/Portfolio/main/public/favicon.svg" width="100" />
 </div>
 <h1 align="center">
-  Felipe Vogt - Portfolio
+  Felipe Vogt - Github Portfolio
 </h1>
 
 <div align="center">
@@ -48,12 +48,55 @@ Ambos contienen la siguiente variable que se debe modificar para cada caso:
 ```
 # .env
 VITE_URL=/
+VITE_GITHUB_TOKEN=""
 
 # .env.production
 VITE_URL=/Portfolio/
+VITE_GITHUB_TOKEN=""
 ```
 *En este caso `/Portfolio/` es el directorio donde se encuentra hosteado el proyecto en GitHub Pages*
 
+#### Configurando GitHub GraphQL API
+Para el correcto funcionamiento de la API de GitHub es necesario autenticarse, para ello es necesario crea un token de acceso con los permisos necesarios para que la API pueda acceder a los repositorios.
+
+Para crear el token hay que dirigirse hacia:
+```
+settings/Developer settings/tokens (Classic)
+``` 
+ Y crear un token de acceso con los siguientes permisos 
+ ```
+ * public_repo
+ * read:user
+ ``` 
+
+Luego, copiar el token y agregarlo en el archivo `.env y .env.production` codificado en base64. 
+*( El tiempo de duración del token queda a criterio del usuario )*
+```
+# .env
+VITE_URL=/
+VITE_GITHUB_TOKEN="MTIzXzEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MC09MTIzNDU="
+```
+La configuración de **Apollo Client** se encuentra en el archivo: 
+```
+src\apolloProvider.ts
+```
+
+#### Usando GitHub GraphQL API
+
+La sección de **Proyectos destacados** en el portfolio, corresponden a tus repositorios "pinneados" en tu perfil, donde se obtienen los 2 primeros".
+
+La sección de **Otros proyectos** del portfolio, corresponden a todos tus repositorios de GitHub sin contar los que se encuentren en **Proyectos destacados**.
+
+Las **cards** de cada repositorio cargan los primeros **4 Topics**, la **descripción**, el **nombre**, la **url del repositorio** y la **url del website** de tus repositorios.
+
+Si deseas cambiar la información obtenida y algunas variables, las **queries** se encuentran en: 
+```
+src\queries\github.query.ts
+```
+Y su implementación en el archivo: 
+```
+src\views\HomeView.vue
+```
 ### Información de la pagina
 
 La información del portfolio se carga a partir del archivo `public\data\data.json` , lo que permite que una vez compilada la aplicación puedas cambiar la información de la página sin tener que volver a compilar. 

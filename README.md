@@ -6,11 +6,11 @@
 </h1>
 
 <div align="center">
-Mi portafolio personal realizado en Vue.js
+Mi portafolio personal realizado en Vue.js, cargando mis proyectos en Github mediante GitHub GraphQL API.
 </div>
 </br>
 
-<a href="https://felipevogtf.github.io/Portfolio/" rel="noopener noreferrer" target="_blank">![demo](https://raw.githubusercontent.com/felipevogtf/Portfolio/main/public/demo.jpg)</a>
+<a href="https://felipevogtf.github.io/Github-Portfolio/" rel="noopener noreferrer" target="_blank">![demo](https://raw.githubusercontent.com/felipevogtf/Github-Portfolio/main/public/demo.jpg)</a>
 
 ## Instalación
 

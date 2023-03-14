@@ -188,6 +188,7 @@ export default {
   .nav-content {
     background: var(--background-opacity);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
     z-index: 100;
     position: relative;

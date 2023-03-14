@@ -170,6 +170,7 @@ export default {
 
       border-radius: 5px;
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
 
       background-position: center;
 

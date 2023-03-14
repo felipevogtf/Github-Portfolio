@@ -53,7 +53,7 @@ export default {
     return {
       jsonData: null as any,
       viewer: "" as any,
-      peerItems: 3,
+      peerItems: 6,
       pinnedRepos: 2,
       otherRepos: 0,
       resultLoads: 0,

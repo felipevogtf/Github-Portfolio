@@ -93,7 +93,7 @@ export default {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <img :src="item.openGraphImageUrl" :alt="item.name" />
+          <img :src="item.openGraphImageUrl" :alt="item.name" :title="item.name"/>
         </a>
         <!-- Fin. Imagen -->
 

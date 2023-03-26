@@ -69,7 +69,7 @@ export default {
     >
       <!-- Inicio. Logo -->
       <router-link to="/" class="logo">
-        <img class="logo-img" :src="data.logo" alt="logo" />
+        <img class="logo-img" :src="data.logo" alt="logo" title="logo"/>
       </router-link>
       <!-- Fin. Logo -->
 

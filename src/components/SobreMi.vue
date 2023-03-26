@@ -68,7 +68,7 @@ export default {
             v-for="(item, index) in data.tecnologias"
             :key="index"
           >
-            <img class="chips-icon-svg" :src="item.icono" :alt="item.nombre" />
+            <img class="chips-icon-svg" :src="item.icono" :alt="item.nombre" :title="item.nombre"/>
             <span class="chips-icon-name">{{ item.nombre }}</span>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <img :src="data.imagen" :alt="data.titulo" />
+          <img :src="data.imagen" :alt="data.titulo" :title="data.titulo"/>
         </a>
       </div>
       <!-- Fin. Imagen -->

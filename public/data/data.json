@@ -1,5 +1,6 @@
 {
-  "titulo_pagina": "Felipe Vogt",
+  "titulo_pagina": "Felipe Vogt - Ingeniero Civil Informático",
+  "descripcion_pagina": "Soy un ingeniero de software especializado en construir aplicaciones altamente escalables y con un alto rendimiento.",
   "navbar": {
     "logo": "./imgs/logo.png",
     "items": [

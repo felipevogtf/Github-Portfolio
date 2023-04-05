@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.felipevogtf.simpleweather",
+      "sha256_cert_fingerprints": [
+        "B2:00:DC:F0:7A:6D:60:8B:D4:E6:D5:8C:CC:31:8B:95:5B:0F:A0:FE:04:45:78:8C:32:72:E8:52:EC:8B:2E:89"
+      ]
+    }
+  }
+]

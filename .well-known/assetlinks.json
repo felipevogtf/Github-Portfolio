@@ -3,9 +3,19 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.felipevogtf.simpleweather",
+      "package_name": "com.example.deeplink_first_app",
       "sha256_cert_fingerprints": [
-        "B2:00:DC:F0:7A:6D:60:8B:D4:E6:D5:8C:CC:31:8B:95:5B:0F:A0:FE:04:45:78:8C:32:72:E8:52:EC:8B:2E:89"
+        "2F:4C:6E:0F:6B:F3:85:94:D4:CB:85:CF:3B:12:34:2E:D9:5F:08:8C:8D:5D:17:AB:57:E6:18:21:17:3C:E2:8A"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.deeplink_second_app",
+      "sha256_cert_fingerprints": [
+        "C5:AD:74:D9:C2:EB:27:76:6A:DD:75:D4:32:D0:BB:5B:40:C9:A6:B0:A7:2A:90:95:3C:53:CD:5A:FE:DF:E7:F9"
       ]
     }
   }
